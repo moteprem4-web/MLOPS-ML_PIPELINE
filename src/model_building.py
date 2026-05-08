@@ -68,6 +68,7 @@ def load_data(file_path: str) -> pd.DataFrame:
         raise
 
 def train_model(X_train: np.ndarray, y_train: np.ndarray, params: dict) -> RandomForestClassifier: #this style is called the type hinting in python and it is very useful for me to understand what type of data is expected for the input and also for the output of the function and also for the future reference when i will come back to this code after a long time and i will forget what this function is doing so the type hinting will help me to understand the purpose of this function and also the steps that are involved in this function.
+
     """
     Train the RandomForest model.
     
@@ -119,7 +120,7 @@ def save_model(model, file_path: str) -> None:
 
 def main():
     try:
-        params = {'n_estimators': 25, 'random_state': 42} #for now i am hardcoding the parameters but in the future i will load the parameters from the params.yaml file and also i will use the hyperparameter tuning techniques to find the best parameters for the model training.
+        params = load_params('params.yaml')['model_building']
         train_data = load_data('./data/processed/train_tfidf.csv')
         X_train = train_data.iloc[:, :-1].values
         y_train = train_data.iloc[:, -1].values
@@ -127,7 +128,6 @@ def main():
         clf = train_model(X_train, y_train, params)
         
         model_save_path = 'models/model.pkl'
-        
         save_model(clf, model_save_path)
 
     except Exception as e:
